@@ -281,11 +281,15 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <div class="col-md-6 charts chrt-page-grids " >
                     <h4 class="title">Quocientes dispêndios de capital</h4>
-                        <canvas id="bar3" height="300" width="400" style="width: 400px; height: 300px;"></canvas>          
+                     <div class="polar-area">
+                        <canvas id="pie" height="300" width="400" style="width: 400px; height: 300px;"></canvas>     
+                     </div>            
                 </div>
                 <div class="col-md-6 charts chrt-page-grids chrt-right">
                     <h4 class="title">Retornos do fluxo de caixa</h4>
-                        <canvas id="bar4" height="300" width="400" style="width: 400px; height: 300px;"></canvas> 
+                    <div class="polar-area">
+                        <canvas id="polarArea" height="300" width="400" style="width: 400px; height: 300px;"></canvas>
+                    </div>
                 </div>
                 <div class="clearfix"> </div>
                 <script>
@@ -391,8 +395,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     
                     new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
                     new Chart(document.getElementById("bar2").getContext("2d")).Bar(barChartData2);
-                    new Chart(document.getElementById("bar3").getContext("2d")). Bar(bardata);
-                    new Chart(document.getElementById("bar4").getContext("2d")).Bar(chartData);
+                    new Chart(document.getElementById("pie").getContext("2d")). Bar(bardata);
+                    new Chart(document.getElementById("polarArea").getContext("2d")).Bar(chartData);
                     
                 </script>
             </div>

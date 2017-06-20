@@ -2547,7 +2547,7 @@ i.fa.fa-facebook.profile-icon {
 .chrt-page-grids canvas#bar {
     height: 292px !important;
 }
-.chrt-page-grids canvas#bar2 {
+.chrt-page-grids.chrt-right canvas#bar2 {
     height: 292px !important;
 }
 .chrt-page-grids canvas#bar3 {
@@ -2648,6 +2648,15 @@ i.fa.fa-facebook.profile-icon {
 }
 .chrt-page-grids canvas#bar {
     height: 265px !important;
+}
+.chrt-page-grids.chrt-right canvas#bar2 {
+    height: 292px !important;
+}
+.chrt-page-grids canvas#bar3 {
+    height: 292px !important;
+}
+.chrt-page-grids canvas#bar4 {
+    height: 292px !important;
 }
 }
 @media(max-width:1080px){

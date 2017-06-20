@@ -105,7 +105,7 @@ if (isset($_POST['envia_dado'])) {
             <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="indices.php" class="active"><i class="fa fa-table nav_icon"></i>Calcular Índices</a>
+                        <a href="index.php" class="active"><i class="fa fa-table nav_icon"></i>Calcular Índices</a>
                     </li>
                     <li>
                         <a href="graficos.html" target="_blank"><i class="fa fa-bar-chart nav_icon"></i>Gráficos</a>
@@ -128,7 +128,7 @@ if (isset($_POST['envia_dado'])) {
             <!--toggle button end-->
             <!--logo -->
             <div class="logo">
-                <a href="indices.php">
+                <a href="index.php">
                     <h1>Contabilidade</h1>
                     <span>Índices</span>
                 </a>

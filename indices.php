@@ -128,7 +128,7 @@ if (isset($_POST['envia_dado'])) {
             <!--toggle button end-->
             <!--logo -->
             <div class="logo">
-                <a href="index.html">
+                <a href="indices.php">
                     <h1>Contabilidade</h1>
                     <span>Índices</span>
                 </a>

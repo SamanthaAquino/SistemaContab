@@ -444,7 +444,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     new Chart(document.getElementById("bar3").getContext("2d")).Bar(barChartData3, {
                             scaleOverride : true,
                             scaleSteps : 5,
-                            scaleStepWidth : 1,
+                            scaleStepWidth : 2,
                             scaleStartValue : 0
                         });
                     new Chart(document.getElementById("bar4").getContext("2d")).Bar(barChartData4);

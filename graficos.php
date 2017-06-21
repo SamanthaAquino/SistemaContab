@@ -285,7 +285,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <!-- main content start-->
     <div id="page-wrapper">
         <div class="main-page charts-page">
-            <h3 class="title1">Modern charts</h3>
+            <h3 class="title1">Gráficos</h3>
 
             <?php// var_dump($resultado); ?>
             <div class="charts">
@@ -317,7 +317,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                         Qualidade do resultado = <small>FCO / resultado operacional</small>
                     </p>          
                 </div>
-
+                <div class="clearfix"> </div>
                 <div class="col-md-6 charts chrt-page-grids " >
                     <h4 class="title">Quocientes dispêndios de capital</h4>
                      <canvas id="bar3" height="100" width="200" style="width: 200px; height: 100px;"></canvas> 
@@ -332,23 +332,24 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <div class="col-md-6 charts chrt-page-grids chrt-right">
                     <h4 class="title">Retornos do fluxo de caixa</h4>
-                    <canvas id="bar4" height="100" width="200" style="width: 200px; height: 100px;"></canvas> 
+                    <canvas id="bar4" height="100" width="200" style="width: 200px; height: 100px;"></canvas>
                      <p>
                         <div style="width:10px; height:10px; background-color:#ED6C2D; display:inline-block;"></div>
-                       Retorno do caixa sobre os ativos = <small>FCO antes juros e impostos / ativos totais</small> 
+                       Retorno do caixa sobre os ativos = <small>FCO antes juros e impostos / ativos totais</small>
                     </p>
                     <p>
                         <div style="width:10px; height:10px; background-color:#6D6FC6; display:inline-block;"></div>
-                        Retorno sobre passivo e patrimônio líquido = <small>FCO / (patrimônio líquido + exigível a longo prazo)</small> 
-                    </p>   
+                        Retorno sobre passivo e patrimônio líquido = <small>FCO / (patrimônio líquido + exigível a longo prazo)</small>
+                    </p>
                     <p>
                         <div style="width:10px; height:10px; background-color:#747474; display:inline-block;"></div>
-                        Retorno sobre o patrimônio líquido = <small>FCO / patrimônio líquido</small> 
-                    </p> 
+                        Retorno sobre o patrimônio líquido = <small>FCO / patrimônio líquido</small>
+                    </p>
                 </div>
                 <div class="clearfix"> </div>
                 <script>
                     <?php $k = 0; ?>
+
                     var barChartData = {
                         labels : ["Ano1","Ano2"],
                         datasets : [
@@ -371,7 +372,6 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 data : [<?php echo $resultado[2]; ?>, <?php echo $resultado[12]; ?>]
                             }
                         ]
-
                     };
 
                     var barChartData2 = {
@@ -435,9 +435,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             }
                         ]
 
-                    };
- 
-                    
+                    }
+
                     
                     new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
                     new Chart(document.getElementById("bar2").getContext("2d")).Bar(barChartData2);
@@ -448,7 +447,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             scaleStartValue : -2
                         });
                     new Chart(document.getElementById("bar4").getContext("2d")).Bar(barChartData4);
-                    
+
                 </script>
             </div>
         </div>

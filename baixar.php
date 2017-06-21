@@ -6,7 +6,7 @@ if(isset($arquivo) && file_exists($arquivo)){
          case "exe": $tipo="application/octet-stream"; break;
          case "zip": $tipo="application/zip"; break;
          case "doc": $tipo="application/msword"; break;
-         case "xls": $tipo="application/vnd.ms-excel"; break;
+         case "xlsx": $tipo="application/vnd.ms-excel"; break;
          case "ppt": $tipo="application/vnd.ms-powerpoint"; break;
          case "gif": $tipo="image/gif"; break;
          case "png": $tipo="image/png"; break;

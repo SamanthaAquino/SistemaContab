@@ -30,12 +30,12 @@ function calcula_indices($conexao)
     while ($v = mysqli_fetch_assoc($resultado))
         $pnc = (float)$v['ano1_bp'];
     $passivo = $pc + $pnc;
-    $cdc = ($fco - $dividendos) / $passivo;
+    $cdc = ($fco - abs($dividendos)) / $passivo;
     $resultados[1] = $cdc;
 
 
 //Cobertura de dividendos com caixa = FCO / dividendos totais
-    $cddc = $fco / $dividendos;
+    $cddc = $fco / abs($dividendos);
     $resultados[2] = $cddc;
 
 //Qualidade das vendas = caixa das vendas / vendas
@@ -131,12 +131,12 @@ function calcula_indices($conexao)
     while ($v = mysqli_fetch_assoc($resultado))
         $pnc2 = (float)$v['ano2_bp'];
     $passivo2 = $pc2 + $pnc2;
-    $cdc2 = ($fco2 - $dividendos2) / $passivo2;
+    $cdc2 = ($fco2 - abs($dividendos2)) / $passivo2;
     $resultados[11] = $cdc2;
 
 
 //Cobertura de dividendos com caixa = FCO / dividendos totais
-    $cddc2 = $fco2 / $dividendos2;
+    $cddc2 = $fco2 / abs($dividendos2);
     $resultados[12] = $cddc2;
 
 //Qualidade das vendas = caixa das vendas / vendas

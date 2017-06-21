@@ -1,3 +1,19 @@
+<?php
+
+include("calculo_indices.php");
+
+$bdServidor = '25.71.230.218';
+$bdUsuario = 'siscont';
+$bdSenha = 'contabilidade';
+$bdBanco = 'contabilidade';
+$conexao = mysqli_connect($bdServidor, $bdUsuario, $bdSenha, $bdBanco);
+
+$resultado = calcula_indices($conexao);
+
+
+
+?>
+
 <!--
 Author: W3layouts
 Author URL: http://w3layouts.com
@@ -30,7 +46,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <!--animate-->
     <link href="css/animate.css" rel="stylesheet" type="text/css" media="all">
     <script src="js/wow.min.js"></script>
-     <link rel="icon" href="images/EFEI.png">
+      <link rel="icon" href="images/EFEI.png">
     <script>
         new WOW().init();
     </script>
@@ -51,52 +67,6 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <link href="css/custom.css" rel="stylesheet">
     <!--//Metis Menu -->
 </head>
-<?php
-
-include "calculo_indices.php";
-
-$bdServidor = '25.71.230.218';
-$bdUsuario = 'siscont';
-$bdSenha = 'contabilidade';
-$bdBanco = 'contabilidade';
-
-$conexao = mysqli_connect($bdServidor, $bdUsuario, $bdSenha, $bdBanco);
-
-if(mysqli_connect_errno($conexao)){
-    echo "Erro na conexão!";
-    die();
-}
-
-$deleterecords1 = "TRUNCATE TABLE BP"; //Esvaziar a tabela
-$deleterecords2 = "TRUNCATE TABLE DRE"; //Esvaziar a tabela
-$deleterecords3 = "TRUNCATE TABLE DFC"; //Esvaziar a tabela
-mysqli_query($conexao, $deleterecords1);
-mysqli_query($conexao, $deleterecords2);
-mysqli_query($conexao, $deleterecords3);
-
-//Transferir o arquivo
-if (isset($_POST['envia_dado'])) {
-
-//Importar o arquivo transferido para o banco de dados
-    $handle = fopen($_FILES['filename']['tmp_name'], "r");
-
-    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-        $import_BP="INSERT into bp(conta_bp, ano1_bp, ano2_bp) values('$data[0]','$data[1]','$data[2]')";
-        $import_DRE="INSERT into dre(conta_dre, ano1_dre, ano2_dre) values('$data[3]','$data[4]','$data[5]')";
-        $import_DFC="INSERT into dfc(conta_dfc, ano1_dfc, ano2_dfc) values('$data[6]','$data[7]','$data[8]')";
-
-        mysqli_query($conexao, $import_BP) or die(mysqli_error());
-        mysqli_query($conexao, $import_DRE) or die(mysqli_error());
-        mysqli_query($conexao, $import_DFC) or die(mysqli_error());
-    }
-
-    fclose($handle);
-
-    $resultado = calcula_indices($conexao);
-
-
-}
-?>
 <body class="cbp-spmenu-push">
 <div class="main-content">
     <!--left-fixed -navigation-->
@@ -104,14 +74,15 @@ if (isset($_POST['envia_dado'])) {
         <div class="navbar-collapse">
             <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
                 <ul class="nav" id="side-menu">
+
                     <li>
-                        <a href="index.php" class="active"><i class="fa fa-table nav_icon"></i>Calcular Índices</a>
-                    </li>
-                     <li>
-                        <a href="graficos.php" target="_blank"><i class="fa fa-bar-chart nav_icon"></i>Gráficos</a>
+                        <a href="index.php" ><i class="fa fa-table nav_icon"></i>Calcular Índices</a>
                     </li>
                     <li>
-                        <a href="sobre.html" target="_blank"><i class="fa fa-file-text-o nav_icon"></i>Sobre</a>
+                        <a href="graficos.html" class="active"><i class="fa fa-bar-chart nav_icon"></i>Gráficos</a>
+                    </li>
+                    <li>
+                        <a href="sobre.html" ><i class="fa fa-file-text-o nav_icon"></i>Sobre</a>
                     </li>
                 </ul>
                 <div class="clearfix"> </div>
@@ -313,69 +284,173 @@ if (isset($_POST['envia_dado'])) {
     <!-- //header-ends -->
     <!-- main content start-->
     <div id="page-wrapper">
-        <div class="main-page">
-            <div class="forms">
-                <h3 class="title1">Índices</h3>
-                <div class="form-grids row widget-shadow" data-example-id="basic-forms">
-                    <div class="form-title">
-                        <h4>Insira aqui o seu arquivo .csv</h4>
-                    </div>
-                    <div class="form-body">
-                        <form enctype='multipart/form-data' action='#' method='post'>
-                            <div class="form-group"> <label for="exampleInputFile">Arquivo: </label> <input type="file" name='filename' > <p class="help-block">Para mais informações sobre arquivos .csv visite a seção "Sobre"</p> </div> <button name="envia_dado" type="submit" class="btn btn-default" >Enviar  </button>
+        <div class="main-page charts-page">
+            <h3 class="title1">Modern charts</h3>
+
+            <?php// var_dump($resultado); ?>
+            <div class="charts">
+                <div class="col-md-6 charts chrt-page-grids">
+                    <h4 class="title">Quociente de cobertura de caixa</h4>
+                    <canvas id="bar" height="300" width="400" style="width: 400px; height: 300px;"></canvas>
+                    <p>
+                        <div style="width:10px; height:10px; background-color:#ED6C2D; display:inline-block;"></div>
+                        Cobertura de juros com caixa = <small>FCO antes de juros e impostos / juros</small>
+                    </p>
+                    <p>
+                        <div style="width:10px; height:10px; background-color:#6D6FC6; display:inline-block;"></div>
+                        Cobertura de dívidas com caixa = <small>(FCO – dividendo total) / exigível</small>
+                    </p>
+                    <p>
+                        <div style="width:10px; height:10px; background-color:#747474; display:inline-block;"></div>
+                        Cobertura de dividendos com caixa = <small>FCO / dividendos totais</small> 
+                    </p>
+                </div>
+                <div class="col-md-6 charts chrt-page-grids chrt-right">
+                    <h4 class="title">Quociente de qualidade de resultado</h4>
+                     <canvas id="bar2" height="100" width="200" style="width: 200px; height: 100px;"></canvas> 
+                     <p>
+                        <div style="width:10px; height:10px; background-color:#ED6C2D; display:inline-block;"></div>
+                        Qualidade das vendas = <small>caixa das vendas / vendas</small>
+                    </p>
+                    <p>
+                        <div style="width:10px; height:10px; background-color:#6D6FC6; display:inline-block;"></div>
+                        Qualidade do resultado = <small>FCO / resultado operacional</small>
+                    </p>          
+                </div>
+
+                <div class="col-md-6 charts chrt-page-grids " >
+                    <h4 class="title">Quocientes dispêndios de capital</h4>
+                     <canvas id="bar3" height="100" width="200" style="width: 200px; height: 100px;"></canvas> 
+                     <p>
+                        <div style="width:10px; height:10px; background-color:#ED6C2D; display:inline-block;"></div>
+                        Aquisições de capital = <small>(FCO - dividendo total) / caixa pago por investimento de capital</small> 
+                    </p>
+                    <p>
+                        <div style="width:10px; height:10px; background-color:#6D6FC6; display:inline-block;"></div>
+                        Investimento/financiamento = <small>fluxo de caixa líquido para investimentos / fluxo de caixa líquido de financiamentos</small> 
+                    </p>               
+                </div>
+                <div class="col-md-6 charts chrt-page-grids chrt-right">
+                    <h4 class="title">Retornos do fluxo de caixa</h4>
+                    <canvas id="bar4" height="100" width="200" style="width: 200px; height: 100px;"></canvas> 
+                     <p>
+                        <div style="width:10px; height:10px; background-color:#ED6C2D; display:inline-block;"></div>
+                       Retorno do caixa sobre os ativos = <small>FCO antes juros e impostos / ativos totais</small> 
+                    </p>
+                    <p>
+                        <div style="width:10px; height:10px; background-color:#6D6FC6; display:inline-block;"></div>
+                        Retorno sobre passivo e patrimônio líquido = <small>FCO / (patrimônio líquido + exigível a longo prazo)</small> 
+                    </p>   
+                    <p>
+                        <div style="width:10px; height:10px; background-color:#747474; display:inline-block;"></div>
+                        Retorno sobre o patrimônio líquido = <small>FCO / patrimônio líquido</small> 
+                    </p> 
+                </div>
+                <div class="clearfix"> </div>
+                <script>
+                    <?php $k = 0; ?>
+                    var barChartData = {
+                        labels : ["Ano1","Ano2"],
+                        datasets : [
+                            {
+                                fillColor : "rgba(233, 78, 2, 0.83)",
+                                strokeColor : "#ef553a",
+                                highlightFill: "#ef553a",
+                                data : [<?php echo $resultado[0]; ?>, <?php echo $resultado[10]; ?>]
+                            },
+                            {
+                                fillColor : "rgba(79, 82, 186, 0.83)",
+                                strokeColor : "#4F52BA",
+                                highlightFill: "#4F52BA",
+                                data : [<?php echo $resultado[1]; ?>, <?php echo $resultado[11]; ?>]
+                            },
+                            {
+                                fillColor : "rgba(88, 88, 88, 0.83)",
+                                strokeColor : "#585858",
+                                highlightFill: "#585858",
+                                data : [<?php echo $resultado[2]; ?>, <?php echo $resultado[12]; ?>]
+                            }
+                        ]
+
+                    };
+
+                    var barChartData2 = {
+                        labels : ["Ano1", "Ano2"],
+                        datasets : [
+                            {
+                                fillColor : "rgba(233, 78, 2, 0.83)",
+                                strokeColor : "#ef553a",
+                                highlightFill: "#ef553a",
+                                data : [<?php echo $resultado[3]; ?>, <?php echo $resultado[13]; ?>]
+                            },
+                            {
+                                fillColor : "rgba(79, 82, 186, 0.83)",
+                                strokeColor : "#4F52BA",
+                                highlightFill: "#4F52BA",
+                                data : [<?php echo $resultado[4]; ?>, <?php echo $resultado[14]; ?>]
+                            }
+                        ]
+
+                    };
+
+                    var barChartData3 = {
+                        labels : ["Ano1", "Ano2"],
+                        datasets : [
+                            {
+                                fillColor : "rgba(233, 78, 2, 0.83)",
+                                strokeColor : "#ef553a",
+                                highlightFill: "#ef553a",
+                                data : [<?php echo $resultado[5]; ?>, <?php echo $resultado[15]; ?>]
+                            },
+                            {
+                                fillColor : "rgba(79, 82, 186, 0.83)",
+                                strokeColor : "#4F52BA",
+                                highlightFill: "#4F52BA",
+                                data : [<?php echo $resultado[6]; ?>, <?php echo $resultado[16]; ?>]
+                            }
+                        ]
+
+                    };
+
+                    var barChartData4 = {
+                        labels : ["Ano1", "Ano2"],
+                        datasets : [
+                            {
+                                fillColor : "rgba(233, 78, 2, 0.83)",
+                                strokeColor : "#ef553a",
+                                highlightFill: "#ef553a",
+                                data : [<?php echo $resultado[7]; ?>, <?php echo $resultado[17]; ?>]
+                            },
+                            {
+                                fillColor : "rgba(79, 82, 186, 0.83)",
+                                strokeColor : "#4F52BA",
+                                highlightFill: "#4F52BA",
+                                data : [<?php echo $resultado[8]; ?>, <?php echo $resultado[18]; ?>]
+                            },
+                            {
+                                fillColor : "rgba(88, 88, 88, 0.83)",
+                                strokeColor : "#4F52BA",
+                                highlightFill: "#4F52BA",
+                                data : [<?php echo $resultado[9]; ?>, <?php echo $resultado[19]; ?>]
+                            }
+                        ]
+
+                    };
  
-                                        <!-- //sidebar-collapse -->
-                             </form>
-                    </div>
-                </div>
+                    
+                    
+                    new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
+                    new Chart(document.getElementById("bar2").getContext("2d")).Bar(barChartData2);
+                    new Chart(document.getElementById("bar3").getContext("2d")).Bar(barChartData3, {
+                            scaleOverride : true,
+                            scaleSteps : 5,
+                            scaleStepWidth : 1,
+                            scaleStartValue : -2
+                        });
+                    new Chart(document.getElementById("bar4").getContext("2d")).Bar(barChartData4);
+                    
+                </script>
             </div>
-            <div class="tables">
-                <div class="bs-example widget-shadow" data-example-id="hoverable-table">
-                    <h4>Índices ano 1:</h4>
-                    <table class="table table-hover">
-                        <thead> <tr> <th>Quocientes de cobertura de caixa</th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Cobertura de juros com caixa = FCO antes de juros e impostos / juros</th> <td><?php if(isset($resultado)) echo $resultado[0]?></td> <td> O índice de cobertura de juros com caixa informa o número de períodosque  as  saídas  de  caixa  pelosjuros  são  cobertas  pelos  fluxosde  FCO. </td> </tr> <tr>
-                            <th scope="row">Cobertura de dívidas com caixa= (FCO – dividendo total) / exigível</th> <td><?php if(isset($resultado)) echo $resultado[1]?></td> <td> O  índice  de  cobertura  de dívidas  com  caixa  serve  para  revelar  o número de anos que, no nível dos fluxos de caixa atuais, seriam necessários para quitar todo o exigível.  </td> </tr> <tr>
-                            <th scope="row">Cobertura de dividendos com caixa = FCO / dividendos totais</th> <td><?php if(isset($resultado)) echo $resultado[2]?></td> <td>O  quociente  de  cobertura de  dividendos  com  caixa  fornece  evidência  da  capacidade  de  pagar  dividendos  preferenciais  e ordinários  atuais  com  base  no  fluxo  de  FCO normal.  </td> </tr> <tr>
-                        </tr> </tbody>
-                        <thead> <tr> <th>Quocientes de qualidade de resultado</th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Qualidade das vendas = caixa das vendas / vendas</th> <td><?php if(isset($resultado)) echo $resultado[3]?></td> <td> O quociente  qualidade  das  vendas  serve  para  medir  a  proporção  das receitas  de  vendas  convertidas  em  dinheiro  no  exercício  pelos  recebimentos  e  cobranças  de clientes.</td> </tr> <tr>
-                            <th scope="row">Qualidade do resultado =  FCO / resultado operacional</th> <td><?php if(isset($resultado)) echo $resultado[4]?></td> <td> A qualidade  do  resultado  pretende  fornecer uma indicação da dispersão entre os fluxos de caixa e os lucros divulgados. </td> </tr> <tr>
-                        </tr> </tbody>
-                        <thead> <tr> <th>Quocientes dispêndios de capital</th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Aquisições de capital = (FCO - dividendo total) / caixa pago por investimento de capital</th> <td><?php if(isset($resultado)) echo $resultado[5]?></td> <td> O quociente   de   aquisições   de   capital   sinaliza a   habilidade do   negócio   em   atender   suas necessidades   por   dispêndios   líquidos   de   capital   (aquisições   menos   alienações),   sendo calculado  como  fluxos  de  caixa  operacionais  retidos,  divididos pelas  aquisições  líquidas  de ativos produtivos (imobilizado).</td> </tr> <tr>
-                            <th scope="row">Investimento/financiamento = fluxo de caixa líquido para investimentos / fluxo de caixa líquido de financiamentos</th> <td><?php if(isset($resultado)) echo $resultado[6]?></td> <td>O índice investimento/financiamento compara os  fluxos  líquidos  necessários  para  finalidade  de  investimento,  com  aqueles  gerados  de  financiamentos. </td> </tr> <tr>
-                        </tr> </tbody>
-                        <thead> <tr> <th>Retornos do fluxo de caixa </th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Retorno do caixa sobre os ativos =  FCO antes juros e impostos / ativos totais</th> <td><?php if(isset($resultado)) echo $resultado[7]?></td> <td>O retorno  de  caixa  sobre  os  ativos  totais equivale  ao  retorno  sobre  o investimento   total,   a   taxa   de   retorno   contábil   clássica   fundamentada   no   regime   de competência.</td> </tr> <tr>
-                            <th scope="row">Retorno sobre passivo e patrimônio líquido = FCO / (patrimônio líquido + exigível a longo prazo)</th> <td><?php if(isset($resultado)) echo $resultado[8]?></td> <td>O  retorno  de  caixa  sobre  passivo  e patrimônio  líquido,  é  o  que  serve  para  sinalizar  o  potencial  de  recuperação  de  caixa  do negócio  para  os  investidores,  sejam  eles  credores  ou  acionistas.  </td> </tr> <tr>
-                            <th scope="row">Retorno sobre o patrimônio líquido = FCO / patrimônio líquido</th> <td><?php if(isset($resultado)) echo $resultado[9]?></td> <td>O  retorno  sobre  o patrimônio  líquido  mede  a  taxa  de  recuperação de  caixa  dos  investimentos  realizados  pelos acionistas. </td> </tr> <tr>
-                           </tr> </tbody> </table>
-                </div>
-            </div>
-                <div class="tables">
-                    <div class="bs-example widget-shadow" data-example-id="hoverable-table">
-                    <h4>Índices ano 2:</h4>
-                    <table class="table table-hover"><thead> <tr> <th>Quocientes de cobertura de caixa</th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Cobertura de juros com caixa = FCO antes de juros e impostos / juros</th> <td><?php if(isset($resultado)) echo $resultado[10]?></td> <td> O índice de cobertura de juros com caixa informa o número de períodos que  as  saídas  de  caixa  pelos juros  são  cobertas  pelos  fluxosde  FCO</td> </tr> <tr>
-                            <th scope="row">Cobertura de dívidas com caixa= (FCO – dividendo total) / exigível</th> <td><?php if(isset($resultado)) echo $resultado[11]?></td> <td> O  índice  de  cobertura  de dívidas  com  caixa  serve  para  revelar  o número de anos que, no nível dos fluxos de caixa atuais, seriam necessários para quitar todo o exigível. </td> </tr> <tr>
-                            <th scope="row">Cobertura de dividendos com caixa = FCO / dividendos totais</th> <td><?php if(isset($resultado)) echo $resultado[12]?></td> <td>O  quociente  de  cobertura de  dividendos  com  caixa  fornece  evidência  da  capacidade  de  pagar  dividendos  preferenciais  e ordinários  atuais  com  base  no  fluxo  de  FCO normal.</td> </tr> <tr>
-                        </tr> </tbody>
-                        <thead> <tr> <th>Quocientes de qualidade de resultado</th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Qualidade das vendas = caixa das vendas / vendas</th> <td><?php if(isset($resultado)) echo $resultado[13]?></td> <td>O quociente  qualidade  das  vendas  serve  para  medir  a  proporção  das receitas  de  vendas  convertidas  em  dinheiro  no  exercício  pelos  recebimentos  e  cobranças  de clientes.</td> </tr> <tr>
-                            <th scope="row">Qualidade do resultado =  FCO / resultado operacional</th> <td><?php if(isset($resultado)) echo $resultado[14]?></td> <td>A qualidade  do  resultado  pretende  fornecer uma indicação da dispersão entre os fluxos de caixa e os lucros divulgados.</td> </tr> <tr>
-                        </tr> </tbody>
-                        <thead> <tr> <th>Quocientes dispêndios de capital</th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Aquisições de capital = (FCO - dividendo total) / caixa pago por investimento de capital</th> <td><?php if(isset($resultado)) echo $resultado[15]?></td> <td> O quociente   de   aquisições   de   capital   sinaliza a   habilidade do   negócio   em   atender   suas necessidades   por   dispêndios   líquidos   de   capital   (aquisições   menos   alienações),   sendo calculado  como  fluxos  de  caixa  operacionais  retidos,  divididos pelas  aquisições  líquidas  de ativos produtivos (imobilizado).</td> </tr> <tr>
-                            <th scope="row">Investimento/financiamento = fluxo de caixa líquido para investimentos / fluxo de caixa líquido de financiamentos</th> <td><?php if(isset($resultado)) echo $resultado[16]?></td> <td>O índice investimento/financiamento compara os  fluxos  líquidos  necessários  para  finalidade  de  investimento,  com  aqueles  gerados  de  financiamentos.</td> </tr> <tr>
-                        </tr> </tbody>
-                        <thead> <tr> <th>Retornos do fluxo de caixa </th> <th>Índice</th> <th>Análise</th> </tr> </thead> <tbody> <tr>
-                            <th scope="row">Retorno do caixa sobre os ativos =  FCO antes juros e impostos / ativos totais</th> <td><?php if(isset($resultado)) echo $resultado[17]?></td> <td>O retorno  de  caixa  sobre  os  ativos  totais equivale  ao  retorno  sobre  o investimento   total,   a   taxa   de   retorno   contábil   clássica   fundamentada   no   regime   de competência.</td> </tr> <tr>
-                            <th scope="row">Retorno sobre passivo e patrimônio líquido = FCO / (patrimônio líquido + exigível a longo prazo)</th> <td><?php if(isset($resultado)) echo $resultado[18]?></td> <td>O  retorno  de  caixa  sobre  passivo  e patrimônio  líquido,  é  o  que  serve  para  sinalizar  o  potencial  de  recuperação  de  caixa  do negócio  para  os  investidores,  sejam  eles  credores  ou  acionistas.</td> </tr> <tr>
-                            <th scope="row">Retorno sobre o patrimônio líquido = FCO / patrimônio líquido</th> <td><?php if(isset($resultado)) echo $resultado[19]?></td> <td>O  retorno  sobre  o patrimônio  líquido  mede  a  taxa  de  recuperação de  caixa  dos  investimentos  realizados  pelos acionistas.</td> </tr> <tr>
-                            </tr> </tbody> </table>
-                </div>
-                </div>
         </div>
     </div>
     <!--footer-->
